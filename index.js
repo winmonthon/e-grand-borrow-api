@@ -9,6 +9,7 @@ import userRouter from './src/modules/user/user-router.js'
 import productRouter from './src/modules/product/product-router.js'
 import skuRouter from './src/modules/sku/sku-router.js'
 import orderRouter from './src/modules/order/order-router.js'
+import uploadRouter from './src/modules/uploads/uploader.route.js'
 
 dotenv.config()
 const app = express()
@@ -35,6 +36,7 @@ app.use('/user', userRouter)
 app.use('/product', productRouter)
 app.use('/sku', skuRouter)
 app.use('/order', orderRouter)
+app.use('/upload', uploadRouter)
 
 app.get('/', (req, res) =>
   res.send({

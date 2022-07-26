@@ -12,6 +12,10 @@ const OrderSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    productConfirmed: {
+      type: Array,
+      default: [],
+    },
     orderStatus: {
       type: String,
       enum: Object.values(orderStatusEnum),

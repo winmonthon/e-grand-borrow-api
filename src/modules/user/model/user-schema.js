@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import StatusEnum from '../../../common/status-enum.js'
+import userTypeEnum from '../../../common/user-type-enum.js'
 
 const UserSchema = new mongoose.Schema(
   {
@@ -25,7 +26,8 @@ const UserSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
-      default: 'member',
+      enum: Object.values(userTypeEnum),
+      default: userTypeEnum.MEMBER,
     },
     status: {
       type: String,

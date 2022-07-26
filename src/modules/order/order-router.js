@@ -15,4 +15,10 @@ router.get('/:orderId', OrderController.getByOrderId)
 //order reject
 router.put('/reject/:orderId', OrderController.rejectOrder)
 
+//confirm order
+router.put('/confirm/:orderId', OrderController.confirmOrder)
+
+//return order
+router.put('/return/:orderId', OrderController.returnOrder)
+
 export default router

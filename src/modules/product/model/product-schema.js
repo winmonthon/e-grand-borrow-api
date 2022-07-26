@@ -11,6 +11,10 @@ const ProductSchema = new mongoose.Schema(
       type: Object,
       required: true,
     },
+    image: {
+      type: String,
+      default: '',
+    },
     status: {
       type: String,
       enum: Object.values(StatusEnum),

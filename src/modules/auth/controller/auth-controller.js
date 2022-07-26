@@ -58,6 +58,7 @@ const AuthController = {
       {
         username: userInfo.username,
         userId: userInfo.userId,
+        userType: userInfo.userType,
       },
       process.env.SECRET,
       {
@@ -196,6 +197,25 @@ const AuthController = {
       token,
       userInfo,
     })
+  },
+  async checkPassword(username, password) {
+    try {
+      const user = await AuthService.getOneAuth({ username })
+
+      if (!user) {
+        throw 'รหัสผ่านไม่ถูกต้อง'
+      }
+
+      const checkPassword = await bcrypt.compare(password, user.password)
+
+      if (!checkPassword) {
+        throw 'รหัสผ่านไม่ถูกต้อง'
+      }
+
+      return true
+    } catch (err) {
+      throw err
+    }
   },
 }
 

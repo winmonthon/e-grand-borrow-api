@@ -151,17 +151,28 @@ const ProductController = {
     try {
       const { productId } = req.params
 
-      const { name, sku } = req.body
+      const { name, sku, deletedSkus, image } = req.body
 
-      await ProductService.update({ _id: productId }, { name })
+      await ProductService.update({ _id: productId }, { name, image })
 
       for (let each of sku) {
-        await SkuService.update(
+        const updated = await SkuService.update(
           { _id: each._id },
           {
             ...each,
           }
         )
+
+        if (!updated) {
+          await SkuService.create({
+            ...each,
+            productId,
+          })
+        }
+      }
+
+      for (let each of deletedSkus) {
+        await SkuService.delete({ _id: each._id })
       }
 
       res.status(200).json({
