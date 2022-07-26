@@ -42,7 +42,7 @@ app.get('/', (req, res) =>
   res.send({
     message: 'server running',
     date: new Date(),
-    version: '1.3',
+    version: '1.5',
   })
 )
 const PORT = process.env.PORT || 3000
