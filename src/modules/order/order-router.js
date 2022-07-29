@@ -21,4 +21,7 @@ router.put('/confirm/:orderId', OrderController.confirmOrder)
 //return order
 router.put('/return/:orderId', OrderController.returnOrder)
 
+//cancel order
+router.put('/cancel/:orderId', OrderController.cancelByUser)
+
 export default router

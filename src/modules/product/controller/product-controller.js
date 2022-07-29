@@ -185,6 +185,64 @@ const ProductController = {
       })
     }
   },
+  async deleteProduct(req, res) {
+    try {
+      const { productId } = req.params
+      console.log(productId)
+      const skus = await SkuService.getAll({ productId })
+      for (let sku of skus) {
+        await SkuService.delete({ _id: sku._id })
+      }
+
+      await ProductService.delete({ _id: productId })
+
+      res.status(200).json({ success: true })
+    } catch (err) {
+      console.log(err)
+      res.status(400).json(err)
+    }
+  },
+  async productReport(req, res) {
+    try {
+      const allSkus = await SkuService.getAll()
+
+      const allUsingSku = allSkus.filter(
+        (sku) => sku.useStatus === useStatusEnum.USING
+      )
+
+      const allNoUsingSku = allSkus.filter(
+        (sku) =>
+          sku.useStatus === useStatusEnum.NO_USE &&
+          (sku.condition === conditionEnum.GOOD ||
+            sku.condition === conditionEnum.MODERATE)
+      )
+
+      const allWaitForRepairSku = allSkus.filter(
+        (sku) => sku.condition === conditionEnum.WAITIN_FOR_REPAIR
+      )
+
+      const allDefectSku = allSkus.filter(
+        (sku) => sku.condition === conditionEnum.DEFECTIVE
+      )
+
+      const allSkusCount = allSkus.length
+      const allUsingSkuCount = allUsingSku.length
+      const allNoUsingSkuCount = allNoUsingSku.length
+      const allDefectSkuCount = allDefectSku.length
+      const allWaitForRepairSkuCount = allWaitForRepairSku.length
+
+      res.status(200).json({
+        allSkusCount,
+        allUsingSkuCount,
+        allNoUsingSkuCount,
+        allDefectSkuCount,
+        allWaitForRepairSkuCount,
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(400).json(err)
+    }
+  },
 }
 
 export default ProductController

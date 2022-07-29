@@ -281,6 +281,22 @@ const ProductController = {
       res.status(400).json(err)
     }
   },
+  async cancelByUser(req, res) {
+    try {
+      const { orderId } = req.params
+      await OrderService.update(
+        { orderId },
+        {
+          orderStatus: orderStatusEnum.CANCEL,
+        }
+      )
+
+      res.status(200).json({ success: true })
+    } catch (err) {
+      console.log(err)
+      res.status(400).json(err)
+    }
+  },
 }
 
 export default ProductController
