@@ -41,7 +41,7 @@ const ProductController = {
   },
   async getAll(req, res) {
     try {
-      const { page = 1, size = 10, q = '' } = req.query
+      const { page = 1, size = 10, q = '', category = '' } = req.query
 
       const calSkip = (page, size) => {
         return (page - 1) * size
@@ -52,6 +52,7 @@ const ProductController = {
 
       const results = await ProductService.getAll({
         $or: [{ name: { $regex: q } }],
+        category: { $regex: category },
       })
         .sort({ createdAt: 'desc' })
         .skip(calSkip(page, size))
@@ -60,6 +61,7 @@ const ProductController = {
 
       const count = await ProductService.getAll({
         $or: [{ name: { $regex: q } }],
+        category: { $regex: category },
       })
         .sort({ createdAt: 'desc' })
         .countDocuments()
@@ -151,9 +153,9 @@ const ProductController = {
     try {
       const { productId } = req.params
 
-      const { name, sku, deletedSkus, image } = req.body
+      const { name, sku, deletedSkus, image, category } = req.body
 
-      await ProductService.update({ _id: productId }, { name, image })
+      await ProductService.update({ _id: productId }, { name, image, category })
 
       for (let each of sku) {
         const updated = await SkuService.update(

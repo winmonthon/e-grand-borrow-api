@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import StatusEnum from '../../../common/status-enum.js'
+import ProductTypeEnum from '../../../common/product-type-enum.js'
 
 const ProductSchema = new mongoose.Schema(
   {
@@ -10,6 +11,11 @@ const ProductSchema = new mongoose.Schema(
     createdBy: {
       type: Object,
       required: true,
+    },
+    category: {
+      type: String,
+      enum: Object.values(ProductTypeEnum),
+      default: ProductTypeEnum.PRODUCT,
     },
     image: {
       type: String,
