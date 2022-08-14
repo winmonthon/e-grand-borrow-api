@@ -20,6 +20,14 @@ const SkuSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    boughtAt: {
+      type: String,
+      default: '',
+    },
+    lifeTime: {
+      type: Number,
+      default: 0,
+    },
     useStatus: {
       type: String,
       enum: Object.values(useStatusEnum),
