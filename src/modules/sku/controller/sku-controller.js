@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import OrderService from '../../order/service/order-service.js'
 import useStatusEnum from '../../../common/use-status-enum.js'
 import conditionEnum from '../../../common/condition-enum.js'
+import ProductService from '../../product/service/product-service.js'
 
 dotenv.config()
 
@@ -95,6 +96,35 @@ const SkuController = {
             amount: canUseSku,
             skus,
           },
+        })
+      }
+
+      res.status(200).json(data)
+    } catch (err) {
+      console.log(err)
+      res.status(400).json(err)
+    }
+  },
+  async exportAllSku(req, res) {
+    try {
+      const skus = await SkuService.getAll({})
+
+      const allProduct = await ProductService.getAll({})
+
+      let data = []
+
+      for (let sku of skus) {
+        const productInfo = allProduct.find(
+          (product) => product.id === sku.productId
+        )
+
+        data.push({
+          product_name: productInfo.name || 'N/A',
+          serial_number: sku.serialNumber || 'N/A',
+          condition: sku.condition || 'N/A',
+          use_status: sku.useStatus || 'N/A',
+          life_Time: sku.lifeTime || 'N/A',
+          bought_At: sku.boughtAt || 'N/A',
         })
       }
 
